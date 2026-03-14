@@ -36,7 +36,7 @@ def run_analyst(query: str, raw_data: dict) -> dict:
     """Synthesize raw data into structured analysis."""
 
     model = genai.GenerativeModel(
-        model_name="gemini-1.5-pro",
+        model_name="gemini-2.5-flash",
         system_instruction=ANALYST_SYSTEM
     )
 

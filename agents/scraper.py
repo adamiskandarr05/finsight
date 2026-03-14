@@ -30,18 +30,20 @@ Return ONLY a JSON object with keys:
 No markdown. No preamble. Valid JSON only.
 """
 
-# Google Search grounding tool for live data retrieval
-SEARCH_TOOL = genai.protos.Tool(
-    google_search_retrieval=genai.protos.GoogleSearchRetrieval()
-)
+
 
 def run_scraper(query: str) -> dict:
     """Run the scraper agent, returns raw financial data as dict."""
 
+    # Correct Google Search grounding instantiation for the new SDK
+    search_tool = genai.protos.Tool(
+        google_search=genai.protos.Tool.GoogleSearch()
+    )
+
     model = genai.GenerativeModel(
-        model_name="gemini-1.5-pro",
+        model_name="gemini-2.5-flash",
         system_instruction=SCRAPER_SYSTEM,
-        tools=[SEARCH_TOOL]
+        tools=[search_tool]
     )
 
     response = model.generate_content(

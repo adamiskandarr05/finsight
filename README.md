@@ -114,7 +114,7 @@ python server.py
 ```
 
 **Frontend:**
-Open `index.html` from the project root in your browser. It will call `http://localhost:8080` by default.
+The Flask server now serves `index.html` directly at the root. Open `http://localhost:8080` in your browser!
 
 **Run an agent directly (optional test):**
 ```bash
@@ -159,7 +159,7 @@ Then deploy the frontend via Firebase Hosting, Cloud Storage static site, or any
 
 | Layer | Technology |
 |-------|-----------|
-| AI Models | Gemini 1.5 Pro (Google) |
+| AI Models | Gemini 2.5 Flash |
 | Agent Orchestration | Python, google-generativeai SDK |
 | Web Search | Gemini Google Search grounding |
 | Backend API | Flask + Gunicorn |

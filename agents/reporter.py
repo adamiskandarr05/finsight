@@ -39,7 +39,7 @@ def run_reporter(query: str, analysis: dict) -> dict:
     """Produce the final structured investment brief."""
 
     model = genai.GenerativeModel(
-        model_name="gemini-1.5-pro",
+        model_name="gemini-2.5-flash",
         system_instruction=REPORTER_SYSTEM
     )
 
