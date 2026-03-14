@@ -42,7 +42,7 @@
 
 ### 🔍 Scraper Agent (`agents/scraper.py`)
 - **Role**: Raw data intelligence gatherer
-- **Tools**: Claude `web_search_20250305` tool
+- **Tools**: Gemini Google Search grounding
 - **Gathers**: Recent earnings, SEC filings summaries, news (last 30 days), analyst ratings, key financial metrics (revenue, EPS, P/E, market cap, debt/equity)
 - **Output**: Structured JSON with all raw financial data
 
@@ -65,12 +65,12 @@
 ## Directory Structure
 
 ```
-/agents     — Logic and prompts (orchestrator, scraper, analyst, reporter)
-/tools      — MCP servers / Flask API server
-/app        — Frontend (HTML/CSS/JS terminal-style UI)
+/agents          — Agent logic (orchestrator, scraper, analyst, reporter)
+index.html       — Frontend (HTML/CSS/JS terminal-style UI)
+server.py        — Flask API server
 requirements.txt
-README.md
 Dockerfile
+README.md
 ```
 
 ---
@@ -79,7 +79,7 @@ Dockerfile
 
 ### Prerequisites
 - Python 3.12+
-- An Anthropic API key
+- A [Gemini API key](https://aistudio.google.com/app/apikey) (free)
 
 ### 1. Clone & Install
 
@@ -91,27 +91,32 @@ pip install -r requirements.txt
 
 ### 2. Set Environment Variables
 
-```bash
-export ANTHROPIC_API_KEY=your_key_here
+Create a `.env` file in the project root:
+```
+GEMINI_API_KEY=your_key_here
 ```
 
-Or create a `.env` file:
-```
-ANTHROPIC_API_KEY=your_key_here
+Or export it directly:
+```bash
+# macOS/Linux
+export GEMINI_API_KEY=your_key_here
+
+# Windows PowerShell
+$env:GEMINI_API_KEY = "your_key_here"
 ```
 
 ### 3. Run Locally
 
 **Backend API:**
 ```bash
-python tools/server.py
+python server.py
 # Server starts on http://localhost:8080
 ```
 
 **Frontend:**
-Open `app/index.html` in your browser. It will call `http://localhost:8080` by default.
+Open `index.html` from the project root in your browser. It will call `http://localhost:8080` by default.
 
-**Run an agent directly:**
+**Run an agent directly (optional test):**
 ```bash
 python agents/orchestrator.py "Analyze Apple AAPL latest earnings"
 ```
@@ -134,14 +139,14 @@ gcloud run deploy finsight \
   --platform managed \
   --region us-central1 \
   --allow-unauthenticated \
-  --set-env-vars ANTHROPIC_API_KEY=your_key_here \
+  --set-env-vars GEMINI_API_KEY=your_key_here \
   --memory 512Mi \
   --timeout 120
 ```
 
 ### Update Frontend API URL
 
-In `app/index.html`, update:
+In `index.html`, update:
 ```js
 const API_BASE = "https://your-cloud-run-url.run.app";
 ```
@@ -154,9 +159,9 @@ Then deploy the frontend via Firebase Hosting, Cloud Storage static site, or any
 
 | Layer | Technology |
 |-------|-----------|
-| AI Models | Claude Sonnet 4 (Anthropic) |
-| Agent Orchestration | Python, Anthropic SDK |
-| Web Search | Claude built-in `web_search_20250305` tool |
+| AI Models | Gemini 1.5 Pro (Google) |
+| Agent Orchestration | Python, google-generativeai SDK |
+| Web Search | Gemini Google Search grounding |
 | Backend API | Flask + Gunicorn |
 | Deployment | Google Cloud Run (Docker) |
 | Frontend | Vanilla HTML/CSS/JS |

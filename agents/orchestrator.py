@@ -1,0 +1,32 @@
+"""
+FinSight Orchestrator Agent
+Receives a user query, fans out to scraper/analyst/reporter agents,
+and returns a structured investment brief.
+"""
+
+import os
+import json
+
+def run_orchestrator(query: str) -> dict:
+    """Entry point: takes a query string, returns the full brief as a dict."""
+
+    # Step 1: Scrape raw data
+    from agents.scraper import run_scraper
+    raw_data = run_scraper(query)
+
+    # Step 2: Analyst synthesizes raw data
+    from agents.analyst import run_analyst
+    analysis = run_analyst(query, raw_data)
+
+    # Step 3: Reporter structures the brief
+    from agents.reporter import run_reporter
+    brief = run_reporter(query, analysis)
+
+    return brief
+
+
+if __name__ == "__main__":
+    import sys
+    q = sys.argv[1] if len(sys.argv) > 1 else "Analyze Apple Inc (AAPL) for Q1 2025"
+    result = run_orchestrator(q)
+    print(json.dumps(result, indent=2))

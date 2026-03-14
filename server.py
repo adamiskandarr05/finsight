@@ -9,6 +9,9 @@ import json
 from flask import Flask, request, jsonify
 from flask_cors import CORS
 import sys
+from dotenv import load_dotenv
+
+load_dotenv()  # Load GEMINI_API_KEY from .env if present
 
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 from agents.orchestrator import run_orchestrator
