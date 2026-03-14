@@ -584,8 +584,8 @@
 </div>
 
 <script>
-  // CONFIG: set this to your Cloud Run backend URL
-  const API_BASE = window.API_BASE || "http://localhost:8080";
+  // CONFIG: Automatically point to the same host that served this HTML
+  const API_BASE = window.API_BASE || window.location.origin;
 
   function setQuery(q) {
     document.getElementById("query-input").value = q;

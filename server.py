@@ -20,6 +20,10 @@ app = Flask(__name__)
 CORS(app)  # Allow frontend to call the API
 
 
+@app.route("/", methods=["GET"])
+def index():
+    return app.send_static_file("index.html") if os.path.exists("static/index.html") else open("index.html", encoding="utf-8").read()
+
 @app.route("/health", methods=["GET"])
 def health():
     return jsonify({"status": "ok", "service": "FinSight API"})
