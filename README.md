@@ -17,36 +17,28 @@
 
 ## System Architecture — A2A Flow
 
-```
-┌─────────────────────────────────────────────────┐
-│                   User Query                     │
-│         "Analyze NVIDIA Q4 2024 earnings"        │
-└───────────────────┬─────────────────────────────┘
-                    │
-                    ▼
-┌─────────────────────────────────────────────────┐
-│           Orchestrator Agent                     │
-│   Routes tasks · Merges results · Coordinates   │
-└──────┬────────────┬────────────────┬────────────┘
-       │            │                │
-       ▼            ▼                ▼
-┌──────────┐  ┌──────────┐  ┌──────────────┐
-│ Scraper  │  │ Analyst  │  │  Reporter    │
-│  Agent   │  │  Agent   │  │   Agent      │
-│          │  │          │  │              │
-│ SEC EDGAR│  │ Trends   │  │ Structures   │
-│ News     │  │ Risks    │  │ final brief  │
-│ Earnings │  │ Signals  │  │              │
-└────┬─────┘  └────┬─────┘  └──────┬───────┘
-     │              │               │
-     ▼              ▼               ▼
-┌─────────────────────────────────────────────────┐
-│              Investment Brief                    │
-│   Title · Rating · Metrics · Risks · Verdict    │
-└─────────────────────────────────────────────────┘
+```mermaid
+graph TD
+    O[**Orchestrator**<br>Swarm Coordinator] -->|Initializes & Passes Context| S
+
+    subgraph Agent Swarm
+        S(<b>Scraper Agent</b><br>Raw Data Intelligence Gatherer) -->|Structured Raw JSON| A
+        A(<b>Analyst Agent</b><br>Senior Buy-Side Analyst) -->|Trends, Risks, Signals JSON| R
+        R(<b>Reporter Agent</b><br>Investment Brief Writer)
+    end
+
+    R -->|Final Brief JSON| F((Frontend Display))
+
+    subgraph Actions & Tools
+        S -.->|Uses| T1[Gemini Google Search]
+        S -.->|Gathers| D1[Earnings, SEC Filings, News, Metrics]
+        A -.->|Identifies| D2[Margin Trends, Red Flags, Bullish Signals]
+        R -.->|Produces| D3[BUY/HOLD/SELL/WATCH Rating]
+    end
 ```
 
----
+
+
 
 ## Agent Profiles
 
