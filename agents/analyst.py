@@ -35,6 +35,7 @@ No markdown. Valid JSON only.
 
 def run_analyst(query: str, raw_data: dict) -> dict:
     """Synthesize raw data into structured analysis."""
+    print("  [ANALYST] 🧠 Reasoning over raw data to identify trends and risks...")
 
     model = genai.GenerativeModel(
         model_name="gemini-2.5-flash",
@@ -50,6 +51,7 @@ def run_analyst(query: str, raw_data: dict) -> dict:
 
     response = model.generate_content(prompt)
     raw_text = response.text
+    print("  [ANALYST] ✅ Synthesis complete. Structuring output...")
     return parse_llm_json(raw_text)
 
 

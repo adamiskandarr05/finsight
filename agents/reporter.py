@@ -38,6 +38,7 @@ No markdown. Valid JSON only.
 
 def run_reporter(query: str, analysis: dict) -> dict:
     """Produce the final structured investment brief."""
+    print("  [REPORTER] 📋 Formatting final institutional investment brief...")
 
     model = genai.GenerativeModel(
         model_name="gemini-2.5-flash",
@@ -52,6 +53,7 @@ def run_reporter(query: str, analysis: dict) -> dict:
 
     response = model.generate_content(prompt)
     raw_text = response.text
+    print("  [REPORTER] ✅ Investment brief finalized and timestamped.")
 
     data = parse_llm_json(raw_text)
     if "error" not in data:

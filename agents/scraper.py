@@ -35,6 +35,7 @@ No markdown. No preamble. Valid JSON only.
 
 def run_scraper(query: str) -> dict:
     """Run the scraper agent, returns raw financial data as dict."""
+    print("  [SCRAPER] 🔍 Initializing Gemini Google Search grounding...")
 
     # Correct Google Search grounding instantiation for the new SDK
     search_tool = genai.protos.Tool(
@@ -47,11 +48,13 @@ def run_scraper(query: str) -> dict:
         tools=[search_tool]
     )
 
+    print("  [SCRAPER] 📥 Hunting for SEC filings, earnings, and news...")
     response = model.generate_content(
         f"Research this financial query and gather all available data: {query}"
     )
 
     raw_text = response.text
+    print(f"  [SCRAPER] ✅ Raw intelligence gathered ({len(raw_text)} chars). Parsing JSON...")
     return parse_llm_json(raw_text)
 
 

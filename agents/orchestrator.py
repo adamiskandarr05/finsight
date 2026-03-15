@@ -9,19 +9,25 @@ import json
 
 def run_orchestrator(query: str) -> dict:
     """Entry point: takes a query string, returns the full brief as a dict."""
+    print(f"\n[ORCHESTRATOR] 🎯 Received query: '{query}'")
+    print("[ORCHESTRATOR] 🚀 Initializing swarm fan-out...\n")
 
     # Step 1: Scrape raw data
+    print("[ORCHESTRATOR] >> Launching Scraper Agent...")
     from agents.scraper import run_scraper
     raw_data = run_scraper(query)
 
     # Step 2: Analyst synthesizes raw data
+    print("\n[ORCHESTRATOR] >> Passing raw data to Analyst Agent...")
     from agents.analyst import run_analyst
     analysis = run_analyst(query, raw_data)
 
     # Step 3: Reporter structures the brief
+    print("\n[ORCHESTRATOR] >> Passing synthesis to Reporter Agent...")
     from agents.reporter import run_reporter
     brief = run_reporter(query, analysis)
 
+    print("\n[ORCHESTRATOR] ✅ Swarm execution complete. Returning brief to UI.\n")
     return brief
 
 
