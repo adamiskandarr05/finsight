@@ -7,9 +7,7 @@
 
 ## Functional Diagram
 
-> ⚠️ **TODO**: Replace the image below with your NotebookLM-generated functional diagram.
-> Generate it at [notebooklm.google.com](https://notebooklm.google.com), take a screenshot,
-> save it as `diagram.png` in the repo root, then replace this placeholder.
+
 
 ![FinSight Functional Diagram — NotebookLM](./diagram.png)
 
