@@ -7,6 +7,7 @@ suitable for display in the frontend.
 import os
 import json
 import google.generativeai as genai
+from tools.json_utils import parse_llm_json
 
 genai.configure(api_key=os.environ.get("GEMINI_API_KEY"))
 
@@ -52,24 +53,11 @@ def run_reporter(query: str, analysis: dict) -> dict:
     response = model.generate_content(prompt)
     raw_text = response.text
 
-    # Clean and parse JSON
-    clean = raw_text.strip()
-    if clean.startswith("```json"):
-        clean = clean[len("```json"):]
-    elif clean.startswith("```"):
-        clean = clean[len("```"):]
-    if clean.endswith("```"):
-        clean = clean[:-len("```")]
-    clean = clean.strip()
-
-    try:
-        data = json.loads(clean)
-        # Inject real timestamp
+    data = parse_llm_json(raw_text)
+    if "error" not in data:
         from datetime import datetime, timezone
         data["generated_at"] = datetime.now(timezone.utc).isoformat()
-        return data
-    except json.JSONDecodeError:
-        return {"raw": raw_text, "error": "parse_failed"}
+    return data
 
 
 if __name__ == "__main__":

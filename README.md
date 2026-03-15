@@ -5,6 +5,16 @@
 
 ---
 
+## Functional Diagram
+
+> ⚠️ **TODO**: Replace the image below with your NotebookLM-generated functional diagram.
+> Generate it at [notebooklm.google.com](https://notebooklm.google.com), take a screenshot,
+> save it as `diagram.png` in the repo root, then replace this placeholder.
+
+![FinSight Functional Diagram — NotebookLM](./diagram.png)
+
+---
+
 ## System Architecture — A2A Flow
 
 ```
@@ -66,8 +76,8 @@
 
 ```
 /agents          — Agent logic (orchestrator, scraper, analyst, reporter)
-index.html       — Frontend (HTML/CSS/JS terminal-style UI)
-server.py        — Flask API server
+/app             — Web server (server.py) and frontend (index.html)
+/tools           — Shared utilities (json_utils.py)
 requirements.txt
 Dockerfile
 README.md
@@ -107,14 +117,13 @@ $env:GEMINI_API_KEY = "your_key_here"
 
 ### 3. Run Locally
 
-**Backend API:**
+**Backend API + Frontend:**
 ```bash
-python server.py
+python app/server.py
 # Server starts on http://localhost:8080
 ```
 
-**Frontend:**
-The Flask server now serves `index.html` directly at the root. Open `http://localhost:8080` in your browser!
+Flask serves `app/index.html` directly at the root — open `http://localhost:8080` in your browser!
 
 **Run an agent directly (optional test):**
 ```bash

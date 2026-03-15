@@ -7,6 +7,7 @@ recent news, and analyst commentary for a given company/query.
 import os
 import json
 import google.generativeai as genai
+from tools.json_utils import parse_llm_json
 
 genai.configure(api_key=os.environ.get("GEMINI_API_KEY"))
 
@@ -51,21 +52,7 @@ def run_scraper(query: str) -> dict:
     )
 
     raw_text = response.text
-
-    # Clean and parse JSON
-    clean = raw_text.strip()
-    if clean.startswith("```json"):
-        clean = clean[len("```json"):]
-    elif clean.startswith("```"):
-        clean = clean[len("```"):]
-    if clean.endswith("```"):
-        clean = clean[:-len("```")]
-    clean = clean.strip()
-
-    try:
-        return json.loads(clean)
-    except json.JSONDecodeError:
-        return {"raw": raw_text, "error": "parse_failed"}
+    return parse_llm_json(raw_text)
 
 
 if __name__ == "__main__":
